@@ -18,6 +18,13 @@ sub AUTOLOAD {
     unless defined $sub and ref $sub eq 'CODE';
   goto &$sub;
 }
+sub can {
+  my ($inv, $method) = @_;
+  my $sub = $inv->SUPER::can($method);
+  return $sub if defined $sub;
+  return undef if $method eq 'AUTOCAN'; # don't invoke AUTOCAN on itself
+  return $inv->can('AUTOCAN') ? $inv->AUTOCAN($method) : undef;
+}
 EOF
 
 my $autoload_functions = <<'EOF';
@@ -27,6 +34,13 @@ sub AUTOLOAD {
   Carp::croak qq[Undefined subroutine &${package}::$function called]
     unless defined $sub and ref $sub eq 'CODE';
   goto &$sub;
+}
+sub can {
+  my ($package, $function) = @_;
+  my $sub = $package->SUPER::can($function);
+  return $sub if defined $sub;
+  return undef if $function eq 'AUTOCAN'; # don't invoke AUTOCAN on itself
+  return $package->can('AUTOCAN') ? $package->AUTOCAN($function) : undef;
 }
 EOF
 
