@@ -61,13 +61,13 @@
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/Grinnz/Autoload-FromCAN/issues"
+         "web" : "https://github.com/Grinnz/Autoload-AUTOCAN/issues"
       },
-      "homepage" : "https://github.com/Grinnz/Autoload-FromCAN",
+      "homepage" : "https://github.com/Grinnz/Autoload-AUTOCAN",
       "repository" : {
          "type" : "git",
-         "url" : "https://github.com/Grinnz/Autoload-FromCAN.git",
-         "web" : "https://github.com/Grinnz/Autoload-FromCAN"
+         "url" : "https://github.com/Grinnz/Autoload-AUTOCAN.git",
+         "web" : "https://github.com/Grinnz/Autoload-AUTOCAN"
       }
    },
    "version" : "0.001",

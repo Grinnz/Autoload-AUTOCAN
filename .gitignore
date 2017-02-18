@@ -16,4 +16,4 @@ nytprof.out
 *.o
 *.bs
 /_eumm/
-/Autoload-FromCAN-*
+/Autoload-AUTOCAN-*
