@@ -18,13 +18,6 @@ sub AUTOLOAD {
     unless defined $sub and ref $sub eq 'CODE';
   goto &$sub;
 }
-sub can {
-  my ($inv, $method) = @_;
-  my $sub = $inv->SUPER::can($method);
-  return $sub if defined $sub;
-  return undef if $method eq 'AUTOCAN'; # don't invoke AUTOCAN on itself
-  return $inv->can('AUTOCAN') ? $inv->AUTOCAN($method) : undef;
-}
 EOF
 
 my $autoload_functions = <<'EOF';
@@ -35,6 +28,9 @@ sub AUTOLOAD {
     unless defined $sub and ref $sub eq 'CODE';
   goto &$sub;
 }
+EOF
+
+my $install_can = <<'EOF';
 sub can {
   my ($package, $function) = @_;
   my $sub = $package->SUPER::can($function);
@@ -62,7 +58,7 @@ sub import {
   my ($errored, $error);
   {
     local $@;
-    unless (eval "package $target;\n$autoload_code\n1") {
+    unless (eval "package $target;\n$install_can\n$autoload_code\n1") {
       $errored = 1;
       $error = $@;
     }
