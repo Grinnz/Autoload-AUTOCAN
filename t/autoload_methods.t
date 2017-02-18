@@ -9,7 +9,7 @@ my $amount = 0;
 sub new { bless {}, shift }
 sub attribute { $_[0]{attribute} }
 
-sub can {
+sub AUTOCAN {
   my ($class, $method) = @_;
   return sub { $amount += $_[1] } if $method eq 'add';
   return sub { $amount } if $method eq 'amount';

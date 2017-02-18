@@ -13,8 +13,9 @@ sub AUTOLOAD {
   my ($package, $method) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
   Carp::croak qq[Undefined subroutine &${package}::$method called]
     unless defined $inv && (!ref $inv or Scalar::Util::blessed $inv) && $inv->isa(__PACKAGE__);
+  my $sub = $inv->can('AUTOCAN') ? $inv->AUTOCAN($method) : undef;
   Carp::croak qq[Can't locate object method "$method" via package "$package"]
-    unless defined(my $sub = $inv->can($method));
+    unless defined $sub and ref $sub eq 'CODE';
   goto &$sub;
 }
 EOF
@@ -22,8 +23,9 @@ EOF
 my $autoload_functions = <<'EOF';
 sub AUTOLOAD {
   my ($package, $function) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
+  my $sub = __PACKAGE__->can('AUTOCAN') ? __PACKAGE__->AUTOCAN($function) : undef;
   Carp::croak qq[Undefined subroutine &${package}::$function called]
-    unless defined(my $sub = __PACKAGE__->can($function));
+    unless defined $sub and ref $sub eq 'CODE';
   goto &$sub;
 }
 EOF
@@ -32,16 +34,17 @@ sub import {
   my ($class, $style) = @_;
   $style = 'methods' unless defined $style;
   
+  my $target = caller;
   my $autoload_code;
   if ($style eq 'methods') {
     $autoload_code = $autoload_methods;
+    $autoload_code .= 'sub DESTROY {}' unless $target->can('DESTROY');
   } elsif ($style eq 'functions') {
     $autoload_code = $autoload_functions;
   } else {
     Carp::croak "Invalid autoload style $style (expected 'functions' or 'methods')";
   }
   
-  my $target = caller;
   my ($errored, $error);
   {
     local $@;
@@ -70,7 +73,7 @@ Autoload::FromCAN - Easily set up autoloading
   
   sub increment { $_[0]->count($_[0]->count + 1) }
   
-  sub can {
+  sub AUTOCAN {
     my ($self, $method) = @_;
     return sub { $_[0]->increment } if $method =~ m/inc/;
     return undef;
@@ -94,23 +97,23 @@ L<Autoloading|perlsub/"Autoloading"> is a very powerful mechanism for
 dynamically handling function calls that are not defined. However, its
 implementation is very complicated. For the simple case where you wish to
 allow method calls to methods that don't yet exist, this module allows you to
-define a C<can> method which will return either a code reference or C<undef>.
-Autoloaded method calls will call C<can> and then run the returned method, or
-throw the expected error if C<undef> is returned, so you can generate code or
-delegate the method call as desired.
+define an C<AUTOCAN> method which will return either a code reference or
+C<undef>. Autoloaded method calls will call C<AUTOCAN> and then run the
+returned method, or throw the expected error if C<undef> is returned, so you
+can generate code or delegate the method call as desired.
 
 C<AUTOLOAD> affects standard function calls in addition to method calls. By
 default, the C<AUTOLOAD> provided by this module will die (as Perl normally
 does without a defined C<AUTOLOAD>) if a nonexistent function is called without
 a class or object invocant. If you wish to autoload functions instead of
 methods, you can pass C<functions> as an import argument, and the installed
-C<AUTOLOAD> will attempt to autoload functions using C<can> from the current
-package.
+C<AUTOLOAD> will attempt to autoload functions using C<AUTOCAN> from the
+current package.
 
   package My::Functions;
   use Autoload::FromCAN 'functions';
   
-  sub can {
+  sub AUTOCAN {
     my ($package, $function) = @_;
     return sub { $_[0]x5 } if $function =~ m/dup/;
     return undef;

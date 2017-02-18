@@ -14,7 +14,7 @@ Autoload::FromCAN - Easily set up autoloading
   
   sub increment { $_[0]->count($_[0]->count + 1) }
   
-  sub can {
+  sub AUTOCAN {
     my ($self, $method) = @_;
     return sub { $_[0]->increment } if $method =~ m/inc/;
     return undef;
@@ -38,23 +38,23 @@ L<Autoloading|perlsub/"Autoloading"> is a very powerful mechanism for
 dynamically handling function calls that are not defined. However, its
 implementation is very complicated. For the simple case where you wish to
 allow method calls to methods that don't yet exist, this module allows you to
-define a C<can> method which will return either a code reference or C<undef>.
-Autoloaded method calls will call C<can> and then run the returned method, or
-throw the expected error if C<undef> is returned, so you can generate code or
-delegate the method call as desired.
+define an C<AUTOCAN> method which will return either a code reference or
+C<undef>. Autoloaded method calls will call C<AUTOCAN> and then run the
+returned method, or throw the expected error if C<undef> is returned, so you
+can generate code or delegate the method call as desired.
 
 C<AUTOLOAD> affects standard function calls in addition to method calls. By
 default, the C<AUTOLOAD> provided by this module will die (as Perl normally
 does without a defined C<AUTOLOAD>) if a nonexistent function is called without
 a class or object invocant. If you wish to autoload functions instead of
 methods, you can pass C<functions> as an import argument, and the installed
-C<AUTOLOAD> will attempt to autoload functions using C<can> from the current
-package.
+C<AUTOLOAD> will attempt to autoload functions using C<AUTOCAN> from the
+current package.
 
   package My::Functions;
   use Autoload::FromCAN 'functions';
   
-  sub can {
+  sub AUTOCAN {
     my ($package, $function) = @_;
     return sub { $_[0]x5 } if $function =~ m/dup/;
     return undef;

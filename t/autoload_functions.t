@@ -4,7 +4,7 @@ use warnings;
 package My::Package;
 use Autoload::FromCAN 'functions';
 
-sub can {
+sub AUTOCAN {
   my ($package, $function) = @_;
   return sub { $_[0] . $_[1] } if $function =~ m/cat/;
   return undef;
