@@ -9,13 +9,13 @@ our $VERSION = '0.001';
 
 my $autoload_methods = <<'EOF';
 sub AUTOLOAD {
-  my $inv = shift;
+  my ($inv) = @_;
   my ($package, $method) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
   Carp::croak qq[Undefined subroutine &${package}::$method called]
     unless defined $inv && (!ref $inv or Scalar::Util::blessed $inv) && $inv->isa(__PACKAGE__);
   Carp::croak qq[Can't locate object method "$method" via package "$package"]
     unless defined(my $sub = $inv->can($method));
-  return $inv->$sub(@_);
+  goto &$sub;
 }
 EOF
 
