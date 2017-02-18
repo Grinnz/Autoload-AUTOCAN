@@ -10,6 +10,8 @@ sub AUTOCAN {
   return undef;
 }
 
+sub dog { $_[0] }
+
 package main;
 use Test::More;
 
@@ -18,5 +20,9 @@ ok(eval { $res = My::Package::concatenate('foo', 'bar'); 1 }, 'concatenate funct
 is $res, 'foobar', 'right result';
 ok(!eval { My::Package::join('foo', 'bar'); 1 }, 'join function not autoloaded');
 like $@, qr/My::Package::join/, 'function in error message';
+
+ok defined My::Package->can('cat'), 'cat method present in can';
+ok defined My::Package->can('dog'), 'dog method present in can';
+ok !defined My::Package->can('bird'), 'bird method not present in can';
 
 done_testing;

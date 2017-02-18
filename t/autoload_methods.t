@@ -30,6 +30,10 @@ ok(!eval { My::Class->subtract(5); 1 }, 'subtract method not autoloaded');
 like $@, qr/My::Class/, 'class mentioned in error message';
 like $@, qr/subtract/, 'method mentioned in error message';
 
+ok defined My::Class->can('add'), 'add method present in can';
+ok defined My::Class->can('new'), 'new method present in can';
+ok !defined My::Class->can('subtract'), 'subtract method not present in can';
+
 my $obj = My::Class->new;
 ok(eval { $obj->set('foobar'); 1 }, 'set method autoloaded') or diag $@;
 is $obj->attribute, 'foobar', 'right value';
