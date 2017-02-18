@@ -7,7 +7,7 @@ use 5.006;
 use ExtUtils::MakeMaker;
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "Module abstract",
+  "ABSTRACT" => "Easily set up autoloading",
   "AUTHOR" => "Dan Book <dbook\@cpan.org>",
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0
@@ -16,7 +16,10 @@ my %WriteMakefileArgs = (
   "LICENSE" => "artistic_2",
   "MIN_PERL_VERSION" => "5.006",
   "NAME" => "Autoload::FromCAN",
-  "PREREQ_PM" => {},
+  "PREREQ_PM" => {
+    "Carp" => 0,
+    "Scalar::Util" => 0
+  },
   "TEST_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
@@ -30,8 +33,10 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "Carp" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
+  "Scalar::Util" => 0,
   "Test::More" => "0.88"
 );
 

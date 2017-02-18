@@ -1,5 +1,5 @@
 {
-   "abstract" : "Module abstract",
+   "abstract" : "Easily set up autoloading",
    "author" : [
       "Dan Book <dbook@cpan.org>"
    ],
@@ -31,13 +31,13 @@
       },
       "develop" : {
          "requires" : {
-            "Pod::Coverage::TrustPod" : "0",
-            "Test::Pod" : "1.41",
-            "Test::Pod::Coverage" : "1.08"
+            "Test::Pod" : "1.41"
          }
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
+            "Scalar::Util" : "0",
             "perl" : "5.006"
          }
       },
@@ -337,11 +337,6 @@
          {
             "class" : "Dist::Zilla::Plugin::PodSyntaxTests",
             "name" : "@Author::DBOOK/PodSyntaxTests",
-            "version" : "6.008"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::PodCoverageTests",
-            "name" : "@Author::DBOOK/PodCoverageTests",
             "version" : "6.008"
          },
          {
