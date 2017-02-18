@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : 2
    },
-   "name" : "Autoload-FromCAN",
+   "name" : "Autoload-AUTOCAN",
    "no_index" : {
       "directory" : [
          "eg",
@@ -53,8 +53,8 @@
       }
    },
    "provides" : {
-      "Autoload::FromCAN" : {
-         "file" : "lib/Autoload/FromCAN.pm",
+      "Autoload::AUTOCAN" : {
+         "file" : "lib/Autoload/AUTOCAN.pm",
          "version" : "0.001"
       }
    },

@@ -12,10 +12,10 @@ my %WriteMakefileArgs = (
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0
   },
-  "DISTNAME" => "Autoload-FromCAN",
+  "DISTNAME" => "Autoload-AUTOCAN",
   "LICENSE" => "artistic_2",
   "MIN_PERL_VERSION" => "5.006",
-  "NAME" => "Autoload::FromCAN",
+  "NAME" => "Autoload::AUTOCAN",
   "PREREQ_PM" => {
     "Carp" => 0,
     "Scalar::Util" => 0

@@ -1,4 +1,4 @@
-package Autoload::FromCAN;
+package Autoload::AUTOCAN;
 
 use strict;
 use warnings;
@@ -56,7 +56,7 @@ sub import {
   } elsif ($style eq 'functions') {
     $autoload_code = $autoload_functions;
   } else {
-    Carp::croak "Invalid autoload style $style (expected 'functions' or 'methods')";
+    Carp::croak "Invalid autoload style '$style' (expected 'functions' or 'methods')";
   }
   
   my ($errored, $error);
@@ -75,13 +75,13 @@ sub import {
 
 =head1 NAME
 
-Autoload::FromCAN - Easily set up autoloading
+Autoload::AUTOCAN - Easily set up autoloading
 
 =head1 SYNOPSIS
 
   package My::Class;
   use Moo; # or object system of choice
-  use Autoload::FromCAN;
+  use Autoload::AUTOCAN;
   
   has count => (is => 'rw', default => 0);
   
@@ -125,7 +125,7 @@ C<AUTOLOAD> will attempt to autoload functions using C<AUTOCAN> from the
 current package.
 
   package My::Functions;
-  use Autoload::FromCAN 'functions';
+  use Autoload::AUTOCAN 'functions';
   
   sub AUTOCAN {
     my ($package, $function) = @_;

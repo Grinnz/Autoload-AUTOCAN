@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package My::Class;
-use Autoload::FromCAN;
+use Autoload::AUTOCAN;
 
 my $amount = 0;
 

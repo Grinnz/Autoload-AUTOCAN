@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 package My::Package;
-use Autoload::FromCAN 'functions';
+use Autoload::AUTOCAN 'functions';
 
 sub AUTOCAN {
   my ($package, $function) = @_;
