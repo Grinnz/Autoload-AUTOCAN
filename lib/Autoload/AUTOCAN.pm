@@ -36,7 +36,7 @@ sub can {
   my $sub = $package->SUPER::can($function);
   return $sub if defined $sub;
   return undef if $function eq 'AUTOCAN'; # don't invoke AUTOCAN on itself
-  return $package->can('AUTOCAN') ? $package->AUTOCAN($function) : undef;
+  return $package->can('AUTOCAN') ? scalar $package->AUTOCAN($function) : undef;
 }
 EOF
 
