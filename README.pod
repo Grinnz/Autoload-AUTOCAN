@@ -39,9 +39,19 @@ dynamically handling function calls that are not defined. However, its
 implementation is very complicated. For the simple case where you wish to
 allow method calls to methods that don't yet exist, this module allows you to
 define an C<AUTOCAN> method which will return either a code reference or
-C<undef>. Autoloaded method calls will call C<AUTOCAN> and then run the
-returned method, or throw the expected error if C<undef> is returned, so you
-can generate code or delegate the method call as desired.
+C<undef>.
+
+L<Autoload::AUTOCAN> installs an C<AUTOLOAD> subroutine in the current package,
+which is invoked when an unknown method is called. The installed C<AUTOLOAD>
+will call C<AUTOCAN> with the invocant (class or object the method was called
+on) and the method name. If C<AUTOCAN> returns a code reference, it will be
+called with the same arguments as passed to the unknown method (including the
+invocant). If C<AUTOCAN> returns C<undef>, an error will be thrown as expected
+when calling an undefined method.
+
+Along with C<AUTOLOAD>, the module installs a C<can> method which returns code
+references as normal for defined methods (see L<UNIVERSAL>), and delegates to
+C<AUTOCAN> for unknown methods.
 
 C<AUTOLOAD> affects standard function calls in addition to method calls. By
 default, the C<AUTOLOAD> provided by this module will die (as Perl normally
