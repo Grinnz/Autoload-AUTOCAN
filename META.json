@@ -549,6 +549,6 @@
    "x_contributors" : [
       "Dan Book <grinnz@grinnz.com>"
    ],
-   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0226"
+   "x_serialization_backend" : "Cpanel::JSON::XS version 3.0227"
 }
 
