@@ -5,7 +5,7 @@ use warnings;
 use Carp ();
 use Scalar::Util ();
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 my $autoload_methods = <<'EOF';
 sub AUTOLOAD {
