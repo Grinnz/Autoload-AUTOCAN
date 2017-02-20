@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.002     2017-02-20 01:50:33 EST
   - Handle cases where AUTOCAN may return blessed objects with underlying
     coderefs or code dereference overloads
 
