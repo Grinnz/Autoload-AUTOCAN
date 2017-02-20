@@ -49,6 +49,7 @@
             "ExtUtils::MakeMaker" : "0",
             "File::Spec" : "0",
             "Test::More" : "0.88",
+            "Test::Warnings" : "0",
             "overload" : "0"
          }
       }
@@ -56,7 +57,7 @@
    "provides" : {
       "Autoload::AUTOCAN" : {
          "file" : "lib/Autoload/AUTOCAN.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
    "release_status" : "stable",
@@ -71,7 +72,7 @@
          "web" : "https://github.com/Grinnz/Autoload-AUTOCAN"
       }
    },
-   "version" : "0.003",
+   "version" : "0.004",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.024000"
@@ -260,7 +261,7 @@
                   "branch" : null,
                   "changelog" : "Changes",
                   "signed" : 0,
-                  "tag" : "v0.003",
+                  "tag" : "v0.004",
                   "tag_format" : "v%v",
                   "tag_message" : "v%v"
                },

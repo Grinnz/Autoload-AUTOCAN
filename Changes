@@ -1,4 +1,5 @@
 {{$NEXT}}
+  - Avoid attempting to autoload DESTROY method, instead of installing one
 
 0.003     2017-02-20 13:47:55 EST
   - Only invoke a code dereference overload once if returned by AUTOCAN

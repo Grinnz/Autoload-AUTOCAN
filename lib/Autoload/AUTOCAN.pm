@@ -13,6 +13,7 @@ sub AUTOLOAD {
   my ($package, $method) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
   Carp::croak qq[Undefined subroutine &${package}::$method called]
     unless defined $inv && (!ref $inv or Scalar::Util::blessed $inv) && $inv->isa(__PACKAGE__);
+  return if $method eq 'DESTROY';
   my $autocan = $inv->can('AUTOCAN');
   my $sub = defined $autocan ? $inv->$autocan($method) : undef;
   Carp::croak qq[Can't locate object method "$method" via package "$package"]
@@ -53,7 +54,6 @@ sub import {
   my $autoload_code;
   if ($style eq 'methods') {
     $autoload_code = $autoload_methods;
-    $autoload_code .= 'sub DESTROY {}' unless $target->can('DESTROY');
   } elsif ($style eq 'functions') {
     $autoload_code = $autoload_functions;
   } else {
