@@ -13,7 +13,8 @@ sub AUTOLOAD {
   my ($package, $method) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
   Carp::croak qq[Undefined subroutine &${package}::$method called]
     unless defined $inv && (!ref $inv or Scalar::Util::blessed $inv) && $inv->isa(__PACKAGE__);
-  my $sub = $inv->can('AUTOCAN') ? $inv->AUTOCAN($method) : undef;
+  my $autocan = $inv->can('AUTOCAN');
+  my $sub = defined $autocan ? $inv->$autocan($method) : undef;
   Carp::croak qq[Can't locate object method "$method" via package "$package"]
     unless defined $sub and do { local $@; eval { $sub = \&$sub } };
   # allow overloads and blessed subrefs; assign ref so overload is only invoked once
@@ -24,7 +25,8 @@ EOF
 my $autoload_functions = <<'EOF';
 sub AUTOLOAD {
   my ($package, $function) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
-  my $sub = __PACKAGE__->can('AUTOCAN') ? __PACKAGE__->AUTOCAN($function) : undef;
+  my $autocan = __PACKAGE__->can('AUTOCAN');
+  my $sub = defined $autocan ? __PACKAGE__->$autocan($function) : undef;
   Carp::croak qq[Undefined subroutine &${package}::$function called]
     unless defined $sub and do { local $@; eval { $sub = \&$sub } };
   # allow overloads and blessed subrefs; assign ref so overload is only invoked once
@@ -37,8 +39,9 @@ sub can {
   my ($package, $function) = @_;
   my $sub = $package->SUPER::can($function);
   return $sub if defined $sub;
-  return undef if $function eq 'AUTOCAN'; # don't invoke AUTOCAN on itself
-  return $package->can('AUTOCAN') ? scalar $package->AUTOCAN($function) : undef;
+  return undef if $function eq 'AUTOCAN'; # don't recurse on AUTOCAN
+  my $autocan = $package->can('AUTOCAN');
+  return defined $autocan ? scalar $package->$autocan($function) : undef;
 }
 EOF
 
