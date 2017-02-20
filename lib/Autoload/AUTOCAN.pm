@@ -15,7 +15,8 @@ sub AUTOLOAD {
     unless defined $inv && (!ref $inv or Scalar::Util::blessed $inv) && $inv->isa(__PACKAGE__);
   my $sub = $inv->can('AUTOCAN') ? $inv->AUTOCAN($method) : undef;
   Carp::croak qq[Can't locate object method "$method" via package "$package"]
-    unless defined $sub and do { local $@; eval { \&$sub } }; # allow overloads and blessed subrefs
+    unless defined $sub and do { local $@; eval { $sub = \&$sub } };
+  # allow overloads and blessed subrefs; assign ref so overload is only invoked once
   goto &$sub;
 }
 EOF
@@ -25,7 +26,8 @@ sub AUTOLOAD {
   my ($package, $function) = our $AUTOLOAD =~ /^(.+)::(.+)$/;
   my $sub = __PACKAGE__->can('AUTOCAN') ? __PACKAGE__->AUTOCAN($function) : undef;
   Carp::croak qq[Undefined subroutine &${package}::$function called]
-    unless defined $sub and do { local $@; eval { \&$sub } }; # allow overloads and blessed subrefs
+    unless defined $sub and do { local $@; eval { $sub = \&$sub } };
+  # allow overloads and blessed subrefs; assign ref so overload is only invoked once
   goto &$sub;
 }
 EOF
