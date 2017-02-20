@@ -1,6 +1,21 @@
 use strict;
 use warnings;
 
+package My::CodeClass;
+
+sub new {
+  my ($class, $code) = @_;
+  return bless $code, $class;
+}
+
+package My::CodeOverload;
+use overload '&{}' => sub { $_[0]{code} }, bool => sub {1}, fallback => 1;
+
+sub new {
+  my ($class, $code) = @_;
+  return bless { code => $code }, $class;
+}
+
 package My::Class;
 use Autoload::AUTOCAN;
 
@@ -12,8 +27,8 @@ sub attribute { $_[0]{attribute} }
 sub AUTOCAN {
   my ($class, $method) = @_;
   return sub { $amount += $_[1] } if $method eq 'add';
-  return sub { $amount } if $method eq 'amount';
-  return sub { $_[0]{attribute} = $_[1] } if $method eq 'set';
+  return My::CodeClass->new(sub { $amount }) if $method eq 'amount';
+  return My::CodeOverload->new(sub { $_[0]{attribute} = $_[1] }) if $method eq 'set';
   return undef;
 }
 
