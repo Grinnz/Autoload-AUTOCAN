@@ -1,4 +1,6 @@
 {{$NEXT}}
+  - Handle cases where AUTOCAN may return blessed objects with underlying
+    coderefs or code dereference overloads
 
 0.001     2017-02-19 20:49:18 EST
   - First release
