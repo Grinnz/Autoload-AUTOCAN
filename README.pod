@@ -58,8 +58,8 @@ default, the C<AUTOLOAD> provided by this module will die (as Perl normally
 does without a defined C<AUTOLOAD>) if a nonexistent function is called without
 a class or object invocant. If you wish to autoload functions instead of
 methods, you can pass C<functions> as an import argument, and the installed
-C<AUTOLOAD> will attempt to autoload functions using C<AUTOCAN> from the
-current package.
+C<AUTOLOAD> will autoload functions using C<AUTOCAN> from the current package,
+rather than using the first argument as an invocant.
 
   package My::Functions;
   use Autoload::AUTOCAN 'functions';
