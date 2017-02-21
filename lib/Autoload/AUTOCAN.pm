@@ -17,7 +17,7 @@ sub AUTOLOAD {
   my $autocan = $inv->can('AUTOCAN');
   my $sub = defined $autocan ? $inv->$autocan($method) : undef;
   Carp::croak qq[Can't locate object method "$method" via package "$package"]
-    unless defined $sub and do { local $@; eval { $sub = \&$sub } };
+    unless defined $sub and do { local $@; eval { $sub = \&$sub; 1 } };
   # allow overloads and blessed subrefs; assign ref so overload is only invoked once
   goto &$sub;
 }
@@ -29,7 +29,7 @@ sub AUTOLOAD {
   my $autocan = __PACKAGE__->can('AUTOCAN');
   my $sub = defined $autocan ? __PACKAGE__->$autocan($function) : undef;
   Carp::croak qq[Undefined subroutine &${package}::$function called]
-    unless defined $sub and do { local $@; eval { $sub = \&$sub } };
+    unless defined $sub and do { local $@; eval { $sub = \&$sub; 1 } };
   # allow overloads and blessed subrefs; assign ref so overload is only invoked once
   goto &$sub;
 }
