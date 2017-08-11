@@ -74,6 +74,17 @@ rather than using the first argument as an invocant.
   say My::Functions::duplicate('foo'); # foofoofoofoofoo
   say My::Functions::foo('bar'); # undefined subroutine error
 
+=head1 CAVEATS
+
+If you use L<namespace::clean>, it will clean up the installed C<AUTOLOAD>
+function. To avoid this, either use this module B<after> L<namespace::clean>,
+or add an exception for C<AUTOLOAD> as below.
+
+  use Autoload::AUTOCAN;
+  use namespace::clean -except => 'AUTOLOAD';
+
+This issue does not seem to occur with L<namespace::autoclean>.
+
 =head1 BUGS
 
 Report any issues on the public bugtracker.
