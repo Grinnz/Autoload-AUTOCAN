@@ -53,6 +53,12 @@ Along with C<AUTOLOAD>, the module installs a C<can> method which returns code
 references as normal for defined methods (see L<UNIVERSAL>), and delegates to
 C<AUTOCAN> for unknown methods.
 
+=head1 CONFIGURING
+
+L<Autoload::AUTOCAN> accepts import arguments to configure its behavior.
+
+=head2 functions
+
 C<AUTOLOAD> affects standard function calls in addition to method calls. By
 default, the C<AUTOLOAD> provided by this module will die (as Perl normally
 does without a defined C<AUTOLOAD>) if a nonexistent function is called without
@@ -73,6 +79,30 @@ rather than using the first argument as an invocant.
   # elsewhere
   say My::Functions::duplicate('foo'); # foofoofoofoofoo
   say My::Functions::foo('bar'); # undefined subroutine error
+
+=head2 install_subs
+
+By passing C<install_subs> as an import argument, any autoloaded function or
+method returned by C<AUTOCAN> will be installed into the package, so that
+future invocations do not need to go through C<AUTOLOAD>. This should not be
+used if the autoloaded code is expected to change in subsequent calls to
+C<AUTOCAN>, as the installed version will be called or returned by C<can>
+directly.
+
+  package My::Class;
+  use Moo;
+  use Autoload::AUTOCAN 'install_subs';
+  
+  sub AUTOCAN {
+    my ($self, $method) = @_;
+    my $hash = expensive_calculation($method);
+    return sub { $hash };
+  }
+  
+  # elsewhere
+  my $obj = My::Class->new;
+  $obj->foo; # sub foo installed in My::Class
+  $obj->foo; # not autoloaded anymore
 
 =head1 CAVEATS
 

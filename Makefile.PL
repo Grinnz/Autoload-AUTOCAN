@@ -18,7 +18,8 @@ my %WriteMakefileArgs = (
   "NAME" => "Autoload::AUTOCAN",
   "PREREQ_PM" => {
     "Carp" => 0,
-    "Scalar::Util" => 0
+    "Scalar::Util" => 0,
+    "Sub::Util" => "1.40"
   },
   "TEST_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
@@ -39,6 +40,7 @@ my %FallbackPrereqs = (
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
   "Scalar::Util" => 0,
+  "Sub::Util" => "1.40",
   "Test::More" => "0.88",
   "Test::Warnings" => 0,
   "overload" => 0
